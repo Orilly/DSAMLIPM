@@ -2,8 +2,10 @@ from shiny import App, render, ui
 import matplotlib.pyplot as plt
 import pandas as pd
 
+# Converts the csv to a dataframe
 df = pd.read_csv("attendance_anonymised-1.csv")
 
+# Renames columns based on provided key
 df.rename(columns = {
     "Unit Instance Code": "Module Code",
     "Calocc Code": "Year",
@@ -17,8 +19,10 @@ df.rename(columns = {
     "Usage Code": "Attendance Code"
 }, inplace = True)
 
+# Converts "Date" column to DateTime
 df["Date"] = pd.to_datetime(df["Date"])
 
+# Sorts Italian module df by date 
 module = df[df["Module Name"] == "Italian"] # I picked Italian just for you Nicollò
 attendance_over_time = module.groupby("Date")["Attended"].mean().reset_index()
 attendance_over_time.sort_values("Date", inplace = True)
